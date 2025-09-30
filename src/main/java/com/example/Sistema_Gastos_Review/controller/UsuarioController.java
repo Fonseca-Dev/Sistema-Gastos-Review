@@ -1,0 +1,38 @@
+package com.example.Sistema_Gastos_Review.controller;
+
+import com.example.Sistema_Gastos_Review.dto.request.AlterarUsuarioRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarUsuarioRequest;
+import com.example.Sistema_Gastos_Review.dto.response.BaseResponse;
+import com.example.Sistema_Gastos_Review.service.UsuarioService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/usuarios")
+public class UsuarioController {
+
+    private final UsuarioService usuarioService;
+
+    public UsuarioController(UsuarioService usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+
+    @PostMapping
+    public ResponseEntity<BaseResponse> criarUsuario(@RequestBody CriarUsuarioRequest request) {
+        BaseResponse response = usuarioService.criarUsuario(request);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<BaseResponse> alterarUsuario(@PathVariable String id, @RequestBody AlterarUsuarioRequest request){
+        BaseResponse response = usuarioService.alterarUsuario(id,request);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BaseResponse> deletarUsuario(@PathVariable String id){
+        BaseResponse response = usuarioService.deletarUsuario(id);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+}
+

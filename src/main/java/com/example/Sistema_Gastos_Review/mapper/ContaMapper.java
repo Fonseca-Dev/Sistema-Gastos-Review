@@ -1,0 +1,47 @@
+package com.example.Sistema_Gastos_Review.mapper;
+
+import com.example.Sistema_Gastos_Review.dto.response.CriarContaResponse;
+import com.example.Sistema_Gastos_Review.dto.response.DeletarContaResponse;
+import com.example.Sistema_Gastos_Review.entity.Conta;
+import com.example.Sistema_Gastos_Review.entity.Usuario;
+
+import java.math.BigDecimal;
+public class ContaMapper {
+    public static Conta criarContaCorrente(Usuario usuario, Long proximoNumero) {
+        return Conta.builder()
+                .usuario(usuario)
+                .numero(proximoNumero)
+                .tipo("CORRENTE")
+                .saldo(BigDecimal.ZERO)
+                .estado("ATIVA")
+                .build();
+    }
+
+    public static Conta toEntity(String tipo, Usuario usuario, Long proximoNumero){
+        return Conta.builder()
+                .usuario(usuario)
+                .numero(proximoNumero)
+                .tipo(tipo)
+                .saldo(BigDecimal.ZERO)
+                .estado("ATIVA")
+                .build();
+    }
+
+    public static CriarContaResponse toCriarContaResponse(Conta conta){
+        return new CriarContaResponse(
+                conta.getNumero(),
+                conta.getTipo(),
+                conta.getSaldo(),
+                conta.getEstado()
+        );
+    }
+
+    public static DeletarContaResponse toDeletarContaResponse(Conta conta){
+        return new DeletarContaResponse(
+                conta.getNumero(),
+                conta.getTipo(),
+                conta.getSaldo(),
+                conta.getEstado()
+        );
+    }
+}
