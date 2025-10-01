@@ -68,4 +68,31 @@ public class TransacaoController {
         BaseResponse response = transacaoService.criarPagamentoTransferencia(idUsuario, idConta, request);
         return ResponseEntity.status(response.status()).body(response);
     }
+
+    @GetMapping("/transacoes/depositos")
+    public ResponseEntity<BaseResponse> listarDepositosPorConta(
+            @PathVariable String idUsuario,
+            @PathVariable String idConta){
+        BaseResponse response = transacaoService.listarTransacoesPorConta(idUsuario, idConta);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @GetMapping("/carteiras/{idCarteira}/transacoes")
+    public ResponseEntity<BaseResponse> listarTransacoesPorCarteira(
+            @PathVariable String idUsuario,
+            @PathVariable String idConta,
+            @PathVariable String idCarteira){
+        BaseResponse response = transacaoService.listarTransacoesPorCarteira(idUsuario, idConta, idCarteira);
+        return ResponseEntity.status(response.status()).body(response);
+    }
+
+    @GetMapping("/transacoes/categorias-mais-usadas")
+    public ResponseEntity<BaseResponse> categoriasMaisUsadasPorConta(
+            @PathVariable String idUsuario,
+            @PathVariable String idConta,
+            @RequestParam int ano,
+            @RequestParam int mes){
+        BaseResponse response = transacaoService.categoriasMaisUsadasPorConta(idUsuario, idConta, ano, mes);
+        return ResponseEntity.status(response.status()).body(response);
+    }
 }

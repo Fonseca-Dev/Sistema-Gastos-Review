@@ -8,6 +8,9 @@ import com.example.Sistema_Gastos_Review.dto.response.*;
 import com.example.Sistema_Gastos_Review.entity.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class TransacaoMapper {
     public static Saque toSaqueEntity(CriarSaqueRequest request, Conta conta) {
@@ -32,7 +35,7 @@ public class TransacaoMapper {
         );
     }
 
-    public static Deposito toDepositoEntity(CriarDepositoRequest request, Conta conta){
+    public static Deposito toDepositoEntity(CriarDepositoRequest request, Conta conta) {
         return Deposito.builder()
                 .conta(conta)
                 .tipo("DEPOSITO")
@@ -54,7 +57,7 @@ public class TransacaoMapper {
         );
     }
 
-    public static Conta_Carteira toContaCarteiraEntity (Conta conta, Carteira carteira, CriarDepositoNaCarteiraRequest request){
+    public static Conta_Carteira toContaCarteiraDepositoEntity(Conta conta, Carteira carteira, CriarDepositoNaCarteiraRequest request) {
         return Conta_Carteira.builder()
                 .conta(conta)
                 .carteira(carteira)
@@ -64,12 +67,22 @@ public class TransacaoMapper {
                 .build();
     }
 
-    public static void depositarNaCarteira (Conta_Carteira contaCarteira){
+    public static Conta_Carteira toContaCarteiraSaqueEntity(Conta conta, Carteira carteira, CriarDepositoNaCarteiraRequest request) {
+        return Conta_Carteira.builder()
+                .conta(conta)
+                .carteira(carteira)
+                .tipo("SAQUE_CARTEIRA")
+                .valor(request.valor())
+                .data(LocalDateTime.now())
+                .build();
+    }
+
+    public static void depositarNaCarteira(Conta_Carteira contaCarteira) {
         contaCarteira.getConta().setSaldo(contaCarteira.getConta().getSaldo().subtract(contaCarteira.getValor()));
         contaCarteira.getCarteira().setSaldo(contaCarteira.getCarteira().getSaldo().add(contaCarteira.getValor()));
     }
 
-    public static CriarDepositoNaCarteiraResponse toCriarDepositoNaCarteiraResponse (Conta_Carteira contaCarteira){
+    public static CriarDepositoNaCarteiraResponse toCriarDepositoNaCarteiraResponse(Conta_Carteira contaCarteira) {
         return new CriarDepositoNaCarteiraResponse(
                 contaCarteira.getId(),
                 contaCarteira.getValor(),
@@ -79,12 +92,12 @@ public class TransacaoMapper {
         );
     }
 
-    public static void sacarDaCarteira (Conta_Carteira contaCarteira){
+    public static void sacarDaCarteira(Conta_Carteira contaCarteira) {
         contaCarteira.getConta().setSaldo(contaCarteira.getConta().getSaldo().add(contaCarteira.getValor()));
         contaCarteira.getCarteira().setSaldo(contaCarteira.getCarteira().getSaldo().subtract(contaCarteira.getValor()));
     }
 
-    public static CriarSaqueNaCarteiraResponse toCriarSaqueNaCarteiraResponse (Conta_Carteira contaCarteira){
+    public static CriarSaqueNaCarteiraResponse toCriarSaqueNaCarteiraResponse(Conta_Carteira contaCarteira) {
         return new CriarSaqueNaCarteiraResponse(
                 contaCarteira.getId(),
                 contaCarteira.getValor(),
@@ -94,7 +107,7 @@ public class TransacaoMapper {
         );
     }
 
-    public static Pagamento_Transferencia toPagTransfEntityInterna(Conta contaOrigem, Conta contaDestino, CriarPagTansfRequest request){
+    public static Pagamento_Transferencia toPagTransfEntityInterna(Conta contaOrigem, Conta contaDestino, CriarPagTansfRequest request) {
         return Pagamento_Transferencia.builder()
                 .contaOrigem(contaOrigem)
                 .contaDestino(contaDestino)
@@ -105,7 +118,7 @@ public class TransacaoMapper {
                 .build();
     }
 
-    public static Pagamento_Transferencia toPagTransfEntityEXterna(Conta contaOrigem, Long numeroContaDestinoExterna, CriarPagTansfRequest request){
+    public static Pagamento_Transferencia toPagTransfEntityEXterna(Conta contaOrigem, Long numeroContaDestinoExterna, CriarPagTansfRequest request) {
         return Pagamento_Transferencia.builder()
                 .contaOrigem(contaOrigem)
                 .numeroContaDestino(numeroContaDestinoExterna)
@@ -136,4 +149,77 @@ public class TransacaoMapper {
         );
     }
 
+    public static List<TransacaoContaResponse> listarTransacoesContaResponse(
+            List<Deposito> depositos,
+            List<Saque> saques,
+            List<Conta_Carteira> contaCarteiraList,
+            List<Pagamento_Transferencia> pagamentos
+    ) {
+        List<TransacaoContaResponse> lista = new ArrayList<>();
+
+        lista.addAll(
+                depositos.stream()
+                        .map(d -> new TransacaoContaResponse(
+                                d.getTipo(),
+                                d.getData(),
+                                new DepositoResponse(d.getData(), d.getConta().getId(), d.getConta().getNumero(), d.getValor())
+                        ))
+                        .toList()
+        );
+
+        lista.addAll(
+                saques.stream()
+                        .map(s -> new TransacaoContaResponse(
+                                s.getTipo(),
+                                s.getData(),
+                                new SaqueResponse(s.getData(), s.getConta().getId(), s.getConta().getNumero(), s.getValor().negate())
+                        ))
+                        .toList()
+        );
+
+        lista.addAll(
+                contaCarteiraList.stream()
+                        .map(cc -> new TransacaoContaResponse(
+                                cc.getTipo(),
+                                cc.getData(),
+                                new ContaCarteiraResponse(cc.getData(), cc.getConta().getId(), cc.getConta().getNumero(), cc.getValor(), cc.getCarteira().getId())
+                        ))
+                        .toList()
+        );
+
+        lista.addAll(
+                pagamentos.stream()
+                        .map(p -> new TransacaoContaResponse(
+                                p.getTipo(),
+                                p.getData(),
+                                new PagamentoTransferenciaResponse(
+                                        p.getData(),
+                                        p.getContaOrigem().getId(),
+                                        p.getContaOrigem().getNumero(),
+                                        p.getValor(),
+                                        p.getContaDestino() != null ? p.getContaDestino().getId() : null,
+                                        p.getNumeroContaDestino(),
+                                        p.getCategoria()
+                                )
+                        ))
+                        .toList()
+        );
+
+        lista.sort(Comparator.comparing(TransacaoContaResponse::data));
+        return lista;
+    }
+
+    public static List<TransacaoCarteiraResponse> listarTransacoesCarteiraResponse(
+            List<Conta_Carteira> contaCarteiraList
+    ) {
+        return new ArrayList<>(
+                contaCarteiraList.stream().map(cc -> new TransacaoCarteiraResponse(
+                        cc.getConta().getId(),
+                        cc.getConta().getNumero(),
+                        cc.getCarteira().getId(),
+                        cc.getTipo(),
+                        cc.getData(),
+                        cc.getValor()
+                )).toList());
+    }
 }

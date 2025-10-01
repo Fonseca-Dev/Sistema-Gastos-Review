@@ -6,12 +6,18 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @SuperBuilder
 @Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @DiscriminatorValue("PAGAMENTO")
 public class Pagamento_Transferencia extends Transacao {
 
@@ -28,7 +34,4 @@ public class Pagamento_Transferencia extends Transacao {
     @NotBlank
     private String categoria;
 
-    public Pagamento_Transferencia(TransacaoBuilder<?, ?> b) {
-        super(b);
-    }
 }

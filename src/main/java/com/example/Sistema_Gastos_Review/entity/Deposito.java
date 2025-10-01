@@ -4,11 +4,19 @@ import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 @Entity
 @SuperBuilder
-@DiscriminatorValue("DEBITO")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@DiscriminatorValue("DEPOSITO")
 public class Deposito extends Transacao {
     //ManyToOne para criação do relacionamento entre as entidades
     //JoinColumn para criação de uma coluna para identificar a chave estrangeira
