@@ -2,7 +2,9 @@ package com.example.Sistema_Gastos_Review.service;
 
 import com.example.Sistema_Gastos_Review.dto.request.AlterarUsuarioRequest;
 import com.example.Sistema_Gastos_Review.dto.request.CriarUsuarioRequest;
+import com.example.Sistema_Gastos_Review.dto.request.LoginUsuarioRequest;
 import com.example.Sistema_Gastos_Review.dto.response.BaseResponse;
+import com.example.Sistema_Gastos_Review.dto.response.LoginUsuarioResponse;
 import com.example.Sistema_Gastos_Review.entity.Conta;
 import com.example.Sistema_Gastos_Review.entity.Usuario;
 import com.example.Sistema_Gastos_Review.mapper.ContaMapper;
@@ -82,6 +84,31 @@ public class UsuarioService {
                 "Usuario nao encontrado.",
                 HttpStatus.NOT_FOUND,
                 null);
+    }
+
+    public BaseResponse loginPorEmailESenha(LoginUsuarioRequest request){
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(request.email());
+        if (usuarioEncontrado.isEmpty()){
+            return new BaseResponse(
+                    "Usuário não encontrado.",
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        }
+        Usuario usuario = usuarioEncontrado.get();
+        if (!usuario.getSenha().equalsIgnoreCase(request.senha())){
+            return new BaseResponse(
+                    "Senha incorreta.",
+                    HttpStatus.CONFLICT,
+                    null);
+        }
+
+        LoginUsuarioResponse loginUsuarioResponse = new LoginUsuarioResponse(usuario.getId());
+
+        return new BaseResponse(
+                "Login efetuado com suceso.",
+                HttpStatus.OK,
+                loginUsuarioResponse);
     }
 
 }
