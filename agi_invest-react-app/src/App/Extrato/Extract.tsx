@@ -13,15 +13,22 @@ const Extract: React.FC = () => {
 
   // Atualiza o saldo ao montar a tela
   React.useEffect(() => {
-    const fetchSaldo = async () => {
-      try {
-        await atualizarSaldo();
-      } catch (err) {
-        console.error("Erro ao atualizar saldo:", err);
+  const fetchSaldo = async () => {
+    try {
+      const userData = localStorage.getItem("usuario");
+      const userId = userData ? JSON.parse(userData).id : null;
+
+      if (userId) {
+        await atualizarSaldo(userId); // ✅ passar o userId
       }
-    };
-    fetchSaldo();
-  }, []);
+    } catch (err) {
+      console.error("Erro ao atualizar saldo:", err);
+    }
+  };
+
+  fetchSaldo();
+}, []);
+
 
   const handleTransacaoClick = (transacaoId: number) => {
     navigate(`/transacao/${transacaoId}`);
