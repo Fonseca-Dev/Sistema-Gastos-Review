@@ -44,9 +44,11 @@ const Cadastro: React.FC = () => {
       const novoUsuario = { nome, email, senha };
       const resposta = await criarUsuario(novoUsuario);
 
-      console.log("Usuário criado:", resposta);
-
-      alert(resposta.message || "Cadastro realizado com sucesso!");
+      if (resultado.ok) {
+        console.log("Usuário criado:", resultado.data);
+      } else {
+        console.log("Erro ao criar usuário:", resultado.data);
+      }
 
       // Salvar nome e avatar localmente
       localStorage.setItem("userName", resposta.objeto.nome);
@@ -283,6 +285,7 @@ const Cadastro: React.FC = () => {
 };
 
 export default Cadastro;
+
 
 
 
