@@ -9,12 +9,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Menubar from "../Menubar/Menubar";
-import { useSaldo } from "../../contexts/SaldoContext"; // <-- import do contexto
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = React.useState(false);
-  const {saldo, atualizarSaldo} = useSaldo(); // <-- pegar saldo do contexto
+  const [saldo, setSaldo] = React.useState<number | null>(null);
 
   const [userAvatar] = React.useState<string | null>(() => { 
     return localStorage.getItem("userAvatar") || null; 
@@ -24,13 +23,26 @@ const Home: React.FC = () => {
     return localStorage.getItem("userName") || "Usuário"; 
   });
 
-  // Atualiza o saldo ao montar a tela
+  // Buscar saldo via fetch
   React.useEffect(() => {
-    const userData = localStorage.getItem("usuario");
-    if (userData) {
-      const userId = JSON.parse(userData).id;
-      atualizarSaldo(userId); // <-- passe o userId aqui
-    }
+    const fetchSaldo = async () => {
+      try {
+        const userData = localStorage.getItem("usuario");
+        if (!userData) return;
+
+        const userId = JSON.parse(userData).id;
+
+        const response = await fetch(`https://seu-backend.com/api/contas/${userId}`);
+        if (!response.ok) throw new Error(`Erro ao buscar saldo: ${response.statusText}`);
+
+        const data = await response.json();
+        if (data?.saldo !== undefined) setSaldo(data.saldo);
+      } catch (err) {
+        console.error("Erro ao buscar saldo:", err);
+      }
+    };
+
+    fetchSaldo();
   }, []);
 
   const handleProfileClick = () => {
@@ -556,6 +568,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
