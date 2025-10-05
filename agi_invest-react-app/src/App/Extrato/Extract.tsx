@@ -7,7 +7,7 @@ import { useTipoTransacao } from "../../contexts/TipoTransacaoContext";
 
 const Extract: React.FC = () => {
   const navigate = useNavigate();
-  const { saldo, setSaldo } = useSaldo();
+  //const { saldo, setSaldo } = useSaldo();
   const { transacoes } = useTransacao();
   const { renderIcon } = useTipoTransacao();
 
