@@ -33,7 +33,7 @@ const Menubar: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: '#2563eb',
+        color: getColor("/home"),
         background: 'none',
         border: 'none',
         cursor: 'pointer',
@@ -49,7 +49,7 @@ const Menubar: React.FC = () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        color: '#6b7280',
+        color: getColor("/extrato"),
         background: 'none',
         border: 'none',
         cursor: 'pointer',
@@ -106,3 +106,4 @@ const Menubar: React.FC = () => {
 
 
 export default Menubar;
+
