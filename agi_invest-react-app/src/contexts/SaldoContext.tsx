@@ -24,22 +24,26 @@ interface SaldoProviderProps {
 
 export const SaldoProvider: React.FC<SaldoProviderProps> = ({ children }) => {
   const [saldo, setSaldo] = useState<number>(0); // Valor inicial do saldo
-  const userID = localStorage.getItem('userID'); // ou pega do contexto de usuário
-
-  const atualizarSaldo = async () => {
-    if (!userID) return;
+  // Função que busca o saldo mais recente da conta do usuário
+  const atualizarSaldo = async (userId: string) => {
     try {
-      const ultimaConta = await buscarUltimaConta(userID);
-      setSaldo(ultimaConta?.saldo ?? 0);
+      const conta = await buscarUltimaConta(userId);
+      if (conta?.saldo !== undefined) {
+        setSaldo(conta.saldo);
+      }
     } catch (error) {
-      console.error('Erro ao atualizar saldo:', error);
-      setSaldo(0);
+      console.error("Erro ao atualizar saldo:", error);
     }
   };
 
+  // Opcional: Buscar saldo automaticamente se o usuário estiver salvo no localStorage
   useEffect(() => {
-    atualizarSaldo();
-  }, [userID]);
+    const userData = localStorage.getItem("usuario");
+    if (userData) {
+      const user = JSON.parse(userData);
+      atualizarSaldo(user.id);
+    }
+  }, []);
 
   return (
     <SaldoContext.Provider value={{ saldo, setSaldo, atualizarSaldo }}>
