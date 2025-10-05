@@ -24,9 +24,14 @@ const Home: React.FC = () => {
     return localStorage.getItem("userName") || "Usuário"; 
   });
 
-  // Se quiser atualizar saldo ao montar a tela
+  // Atualiza o saldo ao montar a tela
   React.useEffect(() => {
-    atualizarSaldo();
+    const userData = localStorage.getItem("usuario");
+    const userId = userData ? JSON.parse(userData).id : null;
+  
+    if (userId) {
+      atualizarSaldo(userId);
+    }
   }, []);
 
   const handleProfileClick = () => {
@@ -552,6 +557,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
