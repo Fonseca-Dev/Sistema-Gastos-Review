@@ -145,7 +145,7 @@ const Home: React.FC = () => {
               >
                 {showBalance
                   ? "•••••"
-                  : saldo !== null
+                  : saldo !== null && saldo !== undefined
                   ? saldo.toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
@@ -556,6 +556,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
