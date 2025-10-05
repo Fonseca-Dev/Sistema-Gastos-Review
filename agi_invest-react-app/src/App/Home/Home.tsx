@@ -13,7 +13,7 @@ import Menubar from "../Menubar/Menubar";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = React.useState(false);
-  const [saldo, setSaldo] = React.useState<number | null>(null);
+  const [saldo, setSaldo] = useState<number | null>(null);
 
   const [userAvatar] = React.useState<string | null>(() => { 
     return localStorage.getItem("userAvatar") || null; 
@@ -23,26 +23,27 @@ const Home: React.FC = () => {
     return localStorage.getItem("userName") || "Usuário"; 
   });
 
-  // Buscar saldo via fetch
-  React.useEffect(() => {
-    const fetchSaldo = async () => {
-      try {
-        const userData = localStorage.getItem("usuario");
-        if (!userData) return;
+  useEffect(() => {
+    const usuarioId = localStorage.getItem("usuarioId"); // pega o id salvo no login
 
-        const userId = JSON.parse(userData).id;
-
-        const response = await fetch(`https://seu-backend.com/api/contas/${userId}`);
-        if (!response.ok) throw new Error(`Erro ao buscar saldo: ${response.statusText}`);
-
-        const data = await response.json();
-        if (data?.saldo !== undefined) setSaldo(data.saldo);
-      } catch (err) {
-        console.error("Erro ao buscar saldo:", err);
-      }
-    };
-
-    fetchSaldo();
+    if (userID) {
+      fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${userID}/contas`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Erro ao buscar contas");
+          }
+          return res.json();
+        })
+        .then(data => {
+          // supondo que a API retorne um array de contas com saldo
+          if (data && data.length > 0) {
+            setSaldo(data[0].saldo); // pega o saldo da primeira conta
+          }
+        })
+        .catch(err => {
+          console.error("Erro ao buscar saldo:", err);
+        });
+    }
   }, []);
 
   const handleProfileClick = () => {
@@ -568,6 +569,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
