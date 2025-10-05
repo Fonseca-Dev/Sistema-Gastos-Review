@@ -7,9 +7,9 @@ import { useTipoTransacao } from "../../contexts/TipoTransacaoContext";
 
 const Extract: React.FC = () => {
   const navigate = useNavigate();
-  const { saldo, setSaldo } = useSaldo();
-  const { transacoes } = useTransacao();
-  const { renderIcon } = useTipoTransacao();
+  const {saldo, setSaldo} = useSaldo();
+  const {transacoes} = useTransacao();
+  const {renderIcon} = useTipoTransacao();
 
   const handleTransacaoClick = (transacaoId: number) => {
     navigate(`/transacao/${transacaoId}`);
@@ -56,7 +56,9 @@ const Extract: React.FC = () => {
         fontSize: '36px',
         fontWeight: 'bold'
       }}>
-        {`R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        <div style={{ color: 'white', fontSize: '36px', fontWeight: 'bold' }}>
+          {`R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        </div>
       </div>
 
       {/*txt "Variação"*/}
