@@ -1,7 +1,15 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Home, FileText, CreditCard, User, Wallet } from "lucide-react";
 
 const Menubar: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation(); // para saber a rota atual
+
+  // função para determinar a cor do botão
+  const getColor = (path: string) => (location.pathname === path ? '#2563eb' : '#6b7280');
+
+  
   return (
     <div style={{
       position: 'fixed',
@@ -19,7 +27,9 @@ const Menubar: React.FC = () => {
       padding: '28px 0',
       zIndex: 1000
     }}>
-      <button style={{
+      <button 
+        onClick={() => navigate("/home")}
+        style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -33,7 +43,9 @@ const Menubar: React.FC = () => {
         <span style={{ fontSize: '12px', marginTop: '4px' }}>Início</span>
       </button>
 
-      <button style={{
+      <button 
+        onClick={() => navigate("/extrato")}
+        style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -91,5 +103,6 @@ const Menubar: React.FC = () => {
     </div>
   );
 };
+
 
 export default Menubar;
