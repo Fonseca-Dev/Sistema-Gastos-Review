@@ -35,31 +35,17 @@ const Extract: React.FC = () => {
 
   return (
     <>
-     <div
-        style={
-          {
-             display: "flex",
-            flexDirection: "column",
-            minHeight: "100vh",
-            overflowY: "auto",
-            boxSizing: "border-box",
-          } as React.CSSProperties
-        }
-      >
-        {/* Header/card azul */}
-        <div
-          style={{
-            position: "fixed",
-            top: "0px",
-            bottom: "0px",
-            width: "393px",
-            backgroundColor: "#2563eb",
-            color: "white",
-            padding: "16px",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-            zIndex: 1000,
-          }}
-        >
+      {/* ✅ Fundo azul no topo — AGORA FICA PRIMEIRO */}
+      <div style={{
+        position: 'fixed',
+        top: '0px',
+        width: '100%',
+        height: '400px',
+        backgroundColor: '#2563eb',
+        color: 'white',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        zIndex: 1000
+      }}></div>
 
       {/* Menubar fixo no rodapé */}
       <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1010 }}>
