@@ -9,12 +9,12 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Menubar from "../Menubar/Menubar";
+import { useSaldo } from "../../contexts/SaldoContext"; // <-- import do contexto
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = React.useState(false);
-  const [saldo, setSaldo] = React.useState<number | null>(null);
-  // const [ultimaConta, setUltimaConta] = React.useState<any | null>(null);
+  const [saldo, atualizarSaldo] = useSaldo(); // <-- pegar saldo do contexto
 
   const [userAvatar, setUserAvatar] = React.useState<string | null>(() => {
     return localStorage.getItem("userAvatar") || null;
@@ -24,39 +24,9 @@ const Home: React.FC = () => {
     return localStorage.getItem("userName") || "Usuário";
   });
 
-  // Buscar saldo da última conta
+  // Se quiser atualizar saldo ao montar a tela
   React.useEffect(() => {
-    const usuarioId = localStorage.getItem("userID");
-    if (usuarioId) {
-      fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${usuarioId}/contas`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Erro ao buscar contas");
-          return res.json();
-        })
-        .then((data) => {
-          if (data && data.objeto && data.objeto.length > 0) {
-            const conta = data.objeto[data.objeto.length - 1]; // última conta
-            //setUltimaConta(conta);
-            setSaldo(conta.saldo);
-          }
-        })
-        .catch((err) => console.error("Erro ao carregar saldo:", err));
-    }
-  }, []);
-
-  // Escutar mudanças no localStorage para avatar/nome
-  React.useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "userAvatar") {
-        setUserAvatar(e.newValue);
-      }
-      if (e.key === "userName") {
-        setUserName(e.newValue || "Usuário");
-      }
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
+    atualizarSaldo();
   }, []);
 
   const handleProfileClick = () => {
@@ -582,6 +552,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
