@@ -199,6 +199,7 @@ const Home: React.FC = () => {
               </button>
             </div>
             <button
+              onClick={() => navigate("/extrato")}
               style={{
                 fontSize: "14px",
                 textDecoration: "underline",
@@ -210,7 +211,6 @@ const Home: React.FC = () => {
                 left: "170px",
                 top: "50px",
               }}
-              onClick={() => navigate("/extrato")}
             >
               Ver extrato
             </button>
@@ -588,6 +588,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
