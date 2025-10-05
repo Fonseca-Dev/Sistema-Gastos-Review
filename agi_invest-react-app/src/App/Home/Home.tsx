@@ -210,6 +210,7 @@ const Home: React.FC = () => {
                 left: "170px",
                 top: "50px",
               }}
+              onClick={() => navigate("/extrato")}
             >
               Ver extrato
             </button>
@@ -587,5 +588,6 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
