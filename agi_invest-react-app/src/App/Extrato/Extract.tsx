@@ -11,8 +11,14 @@ const Extract: React.FC = () => {
   const { transacoes } = useTransacao();
   const { renderIcon } = useTipoTransacao();
 
+  // Atualiza o saldo ao montar a tela
   React.useEffect(() => {
-    atualizarSaldo();
+    const userData = localStorage.getItem("usuario");
+    const userId = userData ? JSON.parse(userData).id : null;
+  
+    if (userId) {
+      atualizarSaldo(userId);
+    }
   }, []);
 
   const handleTransacaoClick = (transacaoId: number) => {
