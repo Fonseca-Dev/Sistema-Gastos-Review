@@ -26,12 +26,7 @@ const Home: React.FC = () => {
 
   // Atualiza o saldo ao montar a tela
   React.useEffect(() => {
-    const userData = localStorage.getItem("usuario");
-    const userId = userData ? JSON.parse(userData).id : null;
-  
-    if (userId) {
-      atualizarSaldo();
-    }
+    atualizarSaldo();
   }, []);
 
   const handleProfileClick = () => {
@@ -557,6 +552,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
