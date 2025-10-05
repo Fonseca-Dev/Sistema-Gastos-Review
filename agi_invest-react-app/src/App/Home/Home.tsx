@@ -6,12 +6,41 @@ import Menubar from "../Menubar/Menubar";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = React.useState(false);
+  const [saldo, setSaldo] = React.useState<number | null>(null);
+  
   const [userAvatar, setUserAvatar] = React.useState<string | null>(() => {
     return localStorage.getItem('userAvatar') || null;
   });
   const [userName, setUserName] = React.useState<string>(() => {
     return localStorage.getItem('userName') || 'Usuário';
   });
+
+  // Buscar saldo da última conta
+  React.useEffect(() => {
+    const usuarioId = localStorage.getItem("usuarioId");
+    if (usuarioId) {
+      fetch(
+        `https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${usuarioId}/contas`
+      )
+        .then((res) => {
+          if (!res.ok) throw new Error("Erro ao buscar contas");
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Resposta da API:", data);
+        
+          if (data && data.objeto && data.objeto.length > 0) {
+            const conta = data.objeto[data.objeto.length - 1]; // última conta
+            console.log("Última conta:", conta);
+            setUltimaConta(conta);
+            setSaldo(conta.saldo);
+          } else {
+            console.warn("Nenhuma conta encontrada");
+          }
+        })
+        .catch((err) => console.error("Erro ao carregar saldo:", err));
+    }
+  }, []);
 
   // Escutar mudanças no localStorage para atualizar o avatar em tempo real
   React.useEffect(() => {
@@ -449,5 +478,6 @@ const Home: React.FC = () => {
     </>
   );
 };
+
 
 export default Home;
