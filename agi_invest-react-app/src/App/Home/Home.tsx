@@ -26,7 +26,14 @@ const Home: React.FC = () => {
 
   // Atualiza o saldo ao montar a tela
   React.useEffect(() => {
-    atualizarSaldo();
+    const fetchSaldo = async () => {
+      try {
+        await atualizarSaldo();
+      } catch (err) {
+        console.error("Erro ao atualizar saldo:", err);
+      }
+    };
+    fetchSaldo();
   }, []);
 
   const handleProfileClick = () => {
@@ -552,6 +559,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
