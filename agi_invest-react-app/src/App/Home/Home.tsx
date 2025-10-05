@@ -26,7 +26,7 @@ const Home: React.FC = () => {
 
   // Buscar saldo da última conta
   React.useEffect(() => {
-    const usuarioId = localStorage.getItem("usuarioId");
+    const usuarioId = localStorage.getItem("userID");
     if (usuarioId) {
       fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${usuarioId}/contas`)
         .then((res) => {
@@ -587,4 +587,5 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
