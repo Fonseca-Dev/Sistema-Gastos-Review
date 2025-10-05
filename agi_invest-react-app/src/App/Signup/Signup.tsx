@@ -44,18 +44,16 @@ const Cadastro: React.FC = () => {
       const novoUsuario = { nome, email, senha };
       const resposta = await criarUsuario(novoUsuario);
 
-      if (resposta.ok) {
-        console.log("Usuário criado:", resposta.data);
-      } else {
+      if (!resposta.ok) {
         console.log("Erro ao criar usuário:", resposta.data);
+      } else {
+        console.log("Usuário criado:", resposta.data);
+        // Salvar nome e avatar localmente
+        localStorage.setItem("userName", resposta.data.nome);
+        localStorage.setItem("userID", resposta.data.id);
+        if (avatarImage) localStorage.setItem("userAvatar", avatarImage);
+        navigate("/login"); // redireciona para login
       }
-
-      // Salvar nome e avatar localmente
-      localStorage.setItem("userName", resposta.data.nome);
-      localStorage.setItem("userID", resposta.data.id);
-      if (avatarImage) localStorage.setItem("userAvatar", avatarImage);
-
-      navigate("/login"); // redireciona para login
     } catch (err: any) {
       console.error(err);
       alert(err.message);
@@ -285,6 +283,7 @@ const Cadastro: React.FC = () => {
 };
 
 export default Cadastro;
+
 
 
 
