@@ -49,7 +49,8 @@ const Cadastro: React.FC = () => {
       alert(resposta.message || "Cadastro realizado com sucesso!");
 
       // Salvar nome e avatar localmente
-      localStorage.setItem("userName", nome);
+      localStorage.setItem("userName", resposta.objeto.nome);
+      localStorage.setItem("userID", resposta.objeto.id);
       if (avatarImage) localStorage.setItem("userAvatar", avatarImage);
 
       navigate("/login"); // redireciona para login
@@ -282,4 +283,5 @@ const Cadastro: React.FC = () => {
 };
 
 export default Cadastro;
+
 
