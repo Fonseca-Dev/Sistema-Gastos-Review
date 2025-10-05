@@ -16,14 +16,14 @@ const Home: React.FC = () => {
   const [showBalance, setShowBalance] = React.useState(false);
   const {saldo, atualizarSaldo} = useSaldo(); // <-- pegar saldo do contexto
 
- /* const [userAvatar, setUserAvatar] = React.useState<string | null>(() => {
+  const [userAvatar, setUserAvatar] = React.useState<string | null>(() => {
     return localStorage.getItem("userAvatar") || null;
   });
 
-  const [userName, setUserName] = React.useState<string>(() => {
-    return localStorage.getItem("userName") || "Usuário";
+  const [userName, setUserName] = React.useState<string | null>(() => {
+    return localStorage.getItem("userName") || null;
   });
-  */
+  
 
   // Se quiser atualizar saldo ao montar a tela
   React.useEffect(() => {
@@ -553,6 +553,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
