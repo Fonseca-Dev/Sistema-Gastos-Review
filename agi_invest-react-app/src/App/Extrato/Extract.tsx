@@ -18,7 +18,9 @@ const Extract: React.FC = () => {
   return (
     <>
 
-    <Menubar />
+    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 1010 }}>
+      <Menubar />
+    </div>
 
     {/*txt "Saldo atual"*/}
     <div style={{
