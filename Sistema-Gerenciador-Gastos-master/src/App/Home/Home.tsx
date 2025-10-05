@@ -7,7 +7,7 @@ import { useSaldo } from "../../contexts/SaldoContext";
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const [showBalance, setShowBalance] = React.useState(false);
-  const { saldo, setSaldo } = useSaldo();
+  //const { saldo, setSaldo } = useSaldo();
   const [userAvatar, setUserAvatar] = React.useState<string | null>(() => {
     return localStorage.getItem('userAvatar') || null;
   });
