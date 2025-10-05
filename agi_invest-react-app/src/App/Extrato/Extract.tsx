@@ -1,33 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Menubar from "../Menubar/Menubar";
-import { useSaldo } from "../../contexts/SaldoContext";
 import { useTransacao } from "../../contexts/TransacaoContext";
 import { useTipoTransacao } from "../../contexts/TipoTransacaoContext";
 
 const Extract: React.FC = () => {
   const navigate = useNavigate();
-  const { saldo, atualizarSaldo } = useSaldo();
+  const [saldo, setSaldo] = useState<number | null>(null);
   const { transacoes } = useTransacao();
   const { renderIcon } = useTipoTransacao();
 
   // Atualiza o saldo ao montar a tela
-  React.useEffect(() => {
-  const fetchSaldo = async () => {
-    try {
-      const userData = localStorage.getItem("usuario");
-      const userId = userData ? JSON.parse(userData).id : null;
+  useEffect(() => {
+    const usuarioId = localStorage.getItem("userID");
 
-      if (userId) {
-        await atualizarSaldo(userId); // ✅ passar o userId
-      }
-    } catch (err) {
-      console.error("Erro ao atualizar saldo:", err);
+    if (usuarioId) {
+      fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${usuarioId}/contas`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Erro ao buscar contas");
+          }
+          return res.json();
+        })
+        .then(data => {
+          if (data && data.objeto && data.objeto.length > 0) {
+            // pega a ÚLTIMA conta do array
+            const ultimaConta = data.objeto[data.objeto.length - 1];
+            setSaldo(ultimaConta.saldo);
+          }
+        })
+        .catch(err => {
+          console.error("Erro ao buscar saldo:", err);
+        });
     }
-  };
-
-  fetchSaldo();
-}, []);
+  }, []);
 
 
   const handleTransacaoClick = (transacaoId: number) => {
