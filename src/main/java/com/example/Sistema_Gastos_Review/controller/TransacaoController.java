@@ -1,9 +1,9 @@
 package com.example.Sistema_Gastos_Review.controller;
 
 import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoNaCarteiraRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarPagTansfRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarSaqueRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoContaRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarTransferenciaRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarSaqueContaRequest;
 import com.example.Sistema_Gastos_Review.dto.response.BaseResponse;
 import com.example.Sistema_Gastos_Review.service.TransacaoService;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class TransacaoController {
     public ResponseEntity<BaseResponse> criarSaque(
             @PathVariable String idUsuario,
             @PathVariable String idConta,
-            @RequestBody CriarSaqueRequest request){
+            @RequestBody CriarSaqueContaRequest request){
         BaseResponse response = transacaoService.criarSaque(idUsuario, idConta, request);
         return ResponseEntity.status(response.status()).body(response);
     }
@@ -32,7 +32,7 @@ public class TransacaoController {
     public ResponseEntity<BaseResponse> criarDeposito(
             @PathVariable String idUsuario,
             @PathVariable String idConta,
-            @RequestBody CriarDepositoRequest request){
+            @RequestBody CriarDepositoContaRequest request){
         BaseResponse response = transacaoService.criarDeposito(idUsuario, idConta, request);
         return ResponseEntity.status(response.status()).body(response);
     }
@@ -60,12 +60,12 @@ public class TransacaoController {
     }
 
     @PostMapping("/transacoes/pagtransfer")
-    public ResponseEntity<BaseResponse> criarPagamentoTransferencia(
+    public ResponseEntity<BaseResponse> criarTransferencia(
             @PathVariable String idUsuario,
             @PathVariable String idConta,
-            @RequestBody CriarPagTansfRequest request
+            @RequestBody CriarTransferenciaRequest request
             ){
-        BaseResponse response = transacaoService.criarPagamentoTransferencia(idUsuario, idConta, request);
+        BaseResponse response = transacaoService.criarTransferencia(idUsuario, idConta, request);
         return ResponseEntity.status(response.status()).body(response);
     }
 
@@ -92,7 +92,7 @@ public class TransacaoController {
             @PathVariable String idConta,
             @RequestParam int ano,
             @RequestParam int mes){
-        BaseResponse response = transacaoService.categoriasMaisUsadasPorConta(idUsuario, idConta, ano, mes);
+        BaseResponse response = transacaoService.categoriasMaisUsadasPorContaMesAno(idUsuario, idConta, ano, mes);
         return ResponseEntity.status(response.status()).body(response);
     }
 }

@@ -8,6 +8,12 @@ import com.example.Sistema_Gastos_Review.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(
+        origins = {"https://fonseca-dev.github.io", "http://localhost:5500"},
+        allowCredentials = "true",
+        allowedHeaders = "*",
+        methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS}
+)
 
 @RestController
 @RequestMapping("/usuarios")

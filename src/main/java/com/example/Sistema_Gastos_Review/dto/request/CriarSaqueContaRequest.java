@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record CriarDepositoRequest(
+public record CriarSaqueContaRequest(
         @NotNull BigDecimal valor
 ) {
 }

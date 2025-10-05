@@ -1,9 +1,9 @@
 package com.example.Sistema_Gastos_Review.mapper;
 
 import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoNaCarteiraRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarPagTansfRequest;
-import com.example.Sistema_Gastos_Review.dto.request.CriarSaqueRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarDepositoContaRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarTransferenciaRequest;
+import com.example.Sistema_Gastos_Review.dto.request.CriarSaqueContaRequest;
 import com.example.Sistema_Gastos_Review.dto.response.*;
 import com.example.Sistema_Gastos_Review.entity.*;
 
@@ -13,16 +13,16 @@ import java.util.Comparator;
 import java.util.List;
 
 public class TransacaoMapper {
-    public static Saque toSaqueEntity(CriarSaqueRequest request, Conta conta) {
+    public static Saque toSaqueEntity(CriarSaqueContaRequest request, Conta conta) {
         return Saque.builder()
                 .conta(conta)
-                .tipo("SAQUE")
+                .tipo("SAQUE_CONTA")
                 .valor(request.valor())
                 .data(LocalDateTime.now())
                 .build();
     }
 
-    public static void sacar(Conta conta, CriarSaqueRequest request) {
+    public static void sacar(Conta conta, CriarSaqueContaRequest request) {
         conta.setSaldo(conta.getSaldo().subtract(request.valor()));
     }
 
@@ -35,16 +35,16 @@ public class TransacaoMapper {
         );
     }
 
-    public static Deposito toDepositoEntity(CriarDepositoRequest request, Conta conta) {
+    public static Deposito toDepositoEntity(CriarDepositoContaRequest request, Conta conta) {
         return Deposito.builder()
                 .conta(conta)
-                .tipo("DEPOSITO")
+                .tipo("DEPOSITO_CONTA")
                 .valor(request.valor())
                 .data(LocalDateTime.now())
                 .build();
     }
 
-    public static void depositar(Conta conta, CriarDepositoRequest request) {
+    public static void depositar(Conta conta, CriarDepositoContaRequest request) {
         conta.setSaldo(conta.getSaldo().add(request.valor()));
     }
 
@@ -107,39 +107,39 @@ public class TransacaoMapper {
         );
     }
 
-    public static Pagamento_Transferencia toPagTransfEntityInterna(Conta contaOrigem, Conta contaDestino, CriarPagTansfRequest request) {
-        return Pagamento_Transferencia.builder()
+    public static Transferencia toTransferenciaEntityInterna(Conta contaOrigem, Conta contaDestino, CriarTransferenciaRequest request) {
+        return Transferencia.builder()
                 .contaOrigem(contaOrigem)
                 .contaDestino(contaDestino)
-                .tipo("PAGAMENTO_TRANSFERENCIA_INTERNA")
+                .tipo("TRANSFERENCIA_INTERNA")
                 .valor(request.valor())
                 .categoria(request.categoria())
                 .data(LocalDateTime.now())
                 .build();
     }
 
-    public static Pagamento_Transferencia toPagTransfEntityEXterna(Conta contaOrigem, Long numeroContaDestinoExterna, CriarPagTansfRequest request) {
-        return Pagamento_Transferencia.builder()
+    public static Transferencia toTransferenciaEntityExterna(Conta contaOrigem, Long numeroContaDestinoExterna, CriarTransferenciaRequest request) {
+        return Transferencia.builder()
                 .contaOrigem(contaOrigem)
                 .numeroContaDestino(numeroContaDestinoExterna)
-                .tipo("PAGAMENTO_TRANSFERENCIA_INTERNA")
+                .tipo("TRANSFERENCIA_EXTERNA")
                 .valor(request.valor())
                 .categoria(request.categoria())
                 .data(LocalDateTime.now())
                 .build();
     }
 
-    public static void aplicarTransferenciaInterna(Conta contaOrigem, Conta contaDestino, CriarPagTansfRequest request) {
+    public static void aplicarTransferenciaInterna(Conta contaOrigem, Conta contaDestino, CriarTransferenciaRequest request) {
         contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(request.valor()));
         contaDestino.setSaldo(contaDestino.getSaldo().add(request.valor()));
     }
 
-    public static void aplicarTransferenciaExterna(Conta contaOrigem, CriarPagTansfRequest request) {
+    public static void aplicarTransferenciaExterna(Conta contaOrigem, CriarTransferenciaRequest request) {
         contaOrigem.setSaldo(contaOrigem.getSaldo().subtract(request.valor()));
     }
 
-    public static CriarPagamentoTransferenciaResponse toCriarPagamentoTransferenciaResponse(Pagamento_Transferencia pagamento) {
-        return new CriarPagamentoTransferenciaResponse(
+    public static CriarTransferenciaResponse toCriarTransferenciaResponse(Transferencia pagamento) {
+        return new CriarTransferenciaResponse(
                 pagamento.getId(),
                 pagamento.getValor(),
                 pagamento.getData(),
@@ -153,7 +153,7 @@ public class TransacaoMapper {
             List<Deposito> depositos,
             List<Saque> saques,
             List<Conta_Carteira> contaCarteiraList,
-            List<Pagamento_Transferencia> pagamentos
+            List<Transferencia> pagamentos
     ) {
         List<TransacaoContaResponse> lista = new ArrayList<>();
 

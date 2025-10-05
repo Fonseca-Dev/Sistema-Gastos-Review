@@ -5,12 +5,15 @@ import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-public record CriarPagTansfRequest(
+public record CriarTransferenciaRequest(
+        @NotBlank
+        String bancoDestino,
+        @NotNull
+        Long numeroContaDestino,
         @NotNull
         BigDecimal valor,
         @NotBlank
-        String categoria,
-        @NotBlank
-        Long numeroContaDestino
+        String categoria
+
 ) {
 }

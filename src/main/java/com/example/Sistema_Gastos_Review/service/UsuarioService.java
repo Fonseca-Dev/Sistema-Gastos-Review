@@ -103,7 +103,7 @@ public class UsuarioService {
                     null);
         }
 
-        LoginUsuarioResponse loginUsuarioResponse = new LoginUsuarioResponse(usuario.getId());
+        LoginUsuarioResponse loginUsuarioResponse = new LoginUsuarioResponse(usuario.getId(), usuario.getNome());
 
         return new BaseResponse(
                 "Login efetuado com suceso.",
