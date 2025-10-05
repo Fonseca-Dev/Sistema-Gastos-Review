@@ -5,7 +5,7 @@ import { buscarUltimaConta } from '../services/contaService';
 interface SaldoContextType {
   saldo: number;
   setSaldo: (value: number) => void;
-  atualizarSaldo: () => Promise<void>; // opcional, para atualizar após operações
+  atualizarSaldo: (userId: string) => Promise<void>; // opcional, para atualizar após operações
 }
 
 const SaldoContext = createContext<SaldoContextType | undefined>(undefined);
