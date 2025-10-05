@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import { buscarUltimaConta } from '../services/ContaService';
+import { buscarUltimaConta } from '../services/contaService';
 
 interface SaldoContextType {
   saldo: number;
