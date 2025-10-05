@@ -24,10 +24,10 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
-    const userID = localStorage.getItem("userID"); // pega o id salvo no login
+    const usuarioId = localStorage.getItem("usuarioId");
 
-    if (userID) {
-      fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${userID}/contas`)
+    if (usuarioId) {
+      fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${usuarioId}/contas`)
         .then(res => {
           if (!res.ok) {
             throw new Error("Erro ao buscar contas");
@@ -35,9 +35,10 @@ const Home: React.FC = () => {
           return res.json();
         })
         .then(data => {
-          // supondo que a API retorne um array de contas com saldo
-          if (data && data.length > 0) {
-            setSaldo(data[0].saldo); // pega o saldo da primeira conta
+          if (data && data.objeto && data.objeto.length > 0) {
+            // pega a ÚLTIMA conta do array
+            const ultimaConta = data.objeto[data.objeto.length - 1];
+            setSaldo(ultimaConta.saldo);
           }
         })
         .catch(err => {
@@ -569,6 +570,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
