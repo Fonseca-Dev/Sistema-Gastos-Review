@@ -30,7 +30,7 @@ const Home: React.FC = () => {
     const userId = userData ? JSON.parse(userData).id : null;
   
     if (userId) {
-      atualizarSaldo(userId);
+      atualizarSaldo();
     }
   }, []);
 
@@ -557,6 +557,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
