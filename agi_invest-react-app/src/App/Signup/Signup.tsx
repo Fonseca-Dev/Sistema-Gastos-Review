@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { criarUsuario } from "../services/usuarioService";
 
 const Cadastro: React.FC = () => {
   const navigate = useNavigate();
@@ -8,9 +9,11 @@ const Cadastro: React.FC = () => {
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [avatarImage, setAvatarImage] = useState<string | null>(() => {
-    return localStorage.getItem('userAvatar') || null;
+    return localStorage.getItem("userAvatar") || null;
   });
+  const [loading, setLoading] = useState(false);
 
+  // Upload de avatar
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -19,27 +22,43 @@ const Cadastro: React.FC = () => {
         if (event.target?.result) {
           const imageData = event.target.result as string;
           setAvatarImage(imageData);
-          // Salvar a imagem no localStorage
-          localStorage.setItem('userAvatar', imageData);
+          localStorage.setItem("userAvatar", imageData); // opcional
         }
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Submit do formulário
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (senha !== confirmarSenha) {
       alert("As senhas não coincidem!");
       return;
     }
-    console.log("Cadastro realizado:", { nome, email, senha });
 
-    // Salvar o nome do usuário no localStorage
-    localStorage.setItem('userName', nome);
+    setLoading(true);
 
-    alert("Cadastro realizado com sucesso!");
-    navigate("/login");
+    try {
+      const novoUsuario = { nome, email, senha };
+      const resposta = await criarUsuario(novoUsuario);
+
+      console.log("Usuário criado:", resposta);
+
+      alert(resposta.message || "Cadastro realizado com sucesso!");
+
+      // Salvar nome e avatar localmente
+      localStorage.setItem("userName", nome);
+      if (avatarImage) localStorage.setItem("userAvatar", avatarImage);
+
+      navigate("/login"); // redireciona para login
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Erro ao criar usuário");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -165,24 +184,13 @@ const Cadastro: React.FC = () => {
           style={{ display: "flex", flexDirection: "column", gap: "16px" }}
         >
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#000000",
-              }}
-            >
-              Nome:
-            </label>
+            <label>Nome:</label>
             <input
               type="text"
               placeholder="Digite seu nome"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
               required
-              className="custom-input"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -194,24 +202,13 @@ const Cadastro: React.FC = () => {
             />
           </div>
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#000000",
-              }}
-            >
-              Email:
-            </label>
+            <label>Email:</label>
             <input
               type="email"
               placeholder="Digite seu email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="custom-input"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -223,24 +220,13 @@ const Cadastro: React.FC = () => {
             />
           </div>
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#000000ff",
-              }}
-            >
-              Senha:
-            </label>
+            <label>Senha:</label>
             <input
               type="password"
               placeholder="Digite sua senha"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               required
-              className="custom-input"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -252,24 +238,13 @@ const Cadastro: React.FC = () => {
             />
           </div>
           <div>
-            <label
-              style={{
-                display: "block",
-                marginBottom: "8px",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#374151",
-              }}
-            >
-              Confirme sua senha:
-            </label>
+            <label>Confirme sua senha:</label>
             <input
               type="password"
               placeholder="Confirme sua senha"
               value={confirmarSenha}
               onChange={(e) => setConfirmarSenha(e.target.value)}
               required
-              className="custom-input"
               style={{
                 width: "100%",
                 padding: "12px",
@@ -284,6 +259,7 @@ const Cadastro: React.FC = () => {
           <div style={{ display: "flex", justifyContent: "center", marginTop: "12px" }}>
             <button
               type="submit"
+              disabled={loading}
               style={{
                 width: "55%",
                 padding: "12px",
@@ -293,10 +269,10 @@ const Cadastro: React.FC = () => {
                 borderRadius: "80px",
                 fontSize: "16px",
                 fontWeight: "600",
-                cursor: "pointer",
+                cursor: loading ? "not-allowed" : "pointer",
               }}
             >
-              Criar
+              {loading ? "Cadastrando..." : "Criar"}
             </button>
           </div>
         </form>
