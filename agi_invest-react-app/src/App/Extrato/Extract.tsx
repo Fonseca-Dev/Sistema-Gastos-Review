@@ -40,9 +40,9 @@ const Extract: React.FC = () => {
         position: 'fixed',
         top: '0px',
         width: '100%',
+        height: '250px',
         backgroundColor: '#2563eb',
         color: 'white',
-        padding: '16px',
         boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
         zIndex: 1000
       }}></div>
