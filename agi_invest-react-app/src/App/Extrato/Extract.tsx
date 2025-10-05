@@ -7,9 +7,13 @@ import { useTipoTransacao } from "../../contexts/TipoTransacaoContext";
 
 const Extract: React.FC = () => {
   const navigate = useNavigate();
-  const { saldo } = useSaldo();
+  const { saldo, atualizarSaldo } = useSaldo();
   const { transacoes } = useTransacao();
   const { renderIcon } = useTipoTransacao();
+
+  React.useEffect(() => {
+    atualizarSaldo();
+  }, []);
 
   const handleTransacaoClick = (transacaoId: number) => {
     navigate(`/transacao/${transacaoId}`);
@@ -58,7 +62,10 @@ const Extract: React.FC = () => {
         fontSize: '36px',
         fontWeight: 'bold'
       }}>
-        {`R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
+        {saldo !== null 
+          ? `R$ ${saldo.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 
+          : 'Carregando...'
+        }
       </div>
 
       {/*txt "Variação"*/}
@@ -318,8 +325,7 @@ const Extract: React.FC = () => {
     <div style={{
           position: 'fixed',
           top: '0px',
-          bottom: '0px',
-          width: '393px',
+          width: '100%',
           backgroundColor: '#2563eb',
           color: 'white',
           padding: '16px',
