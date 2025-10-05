@@ -1,5 +1,5 @@
 import React from "react";
-import { Eye, EyeOff, RefreshCcw, Bell, MessageCircle, Settings } from "lucide-react";
+import { Eye, EyeOff, Bell, MessageCircle, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Menubar from "../Menubar/Menubar";
 
@@ -145,3 +145,4 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
