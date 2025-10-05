@@ -24,7 +24,7 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
-    const usuarioId = localStorage.getItem("usuarioId"); // pega o id salvo no login
+    const userID = localStorage.getItem("userID"); // pega o id salvo no login
 
     if (userID) {
       fetch(`https://sistema-gastos-694972193726.southamerica-east1.run.app/usuarios/${userID}/contas`)
@@ -569,6 +569,7 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
 
 
 
