@@ -56,7 +56,7 @@ const Cadastro: React.FC = () => {
       navigate("/login"); // redireciona para login
     } catch (err: any) {
       console.error(err);
-      alert(err.message || "Erro ao criar usuário");
+      alert(err.message);
     } finally {
       setLoading(false);
     }
@@ -283,5 +283,6 @@ const Cadastro: React.FC = () => {
 };
 
 export default Cadastro;
+
 
 
