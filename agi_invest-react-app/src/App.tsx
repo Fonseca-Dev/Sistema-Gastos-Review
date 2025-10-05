@@ -16,7 +16,7 @@ function App() {
           <TipoTransacaoProvider>
             <Router>
               <Routes>
-                <Route path="/" element={<Signup />} />
+                <Route path="/" element={<Login />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/home" element={<Home />} />
@@ -31,3 +31,4 @@ function App() {
 }
 
 export default App;
+
