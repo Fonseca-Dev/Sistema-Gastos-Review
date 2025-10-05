@@ -15,10 +15,9 @@ const Extract: React.FC = () => {
   React.useEffect(() => {
     const userData = localStorage.getItem("usuario");
     const userId = userData ? JSON.parse(userData).id : null;
-  
-    if (userId) {
-      atualizarSaldo(userId);
-    }
+
+      atualizarSaldo();
+    
   }, []);
 
   const handleTransacaoClick = (transacaoId: number) => {
