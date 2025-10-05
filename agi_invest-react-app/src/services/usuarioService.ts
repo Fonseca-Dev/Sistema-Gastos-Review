@@ -6,8 +6,14 @@ export async function criarUsuario(dados: { nome: string; email: string; senha: 
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(dados),
   });
-  if (!resp.ok) throw new Error("Erro ao criar usuário");
-  return resp.json();
+  const data = await resp.json(); // pega o JSON da resposta
+
+  // Retorna a resposta completa, mesmo em caso de erro
+  return {
+    ok: resp.ok,
+    status: resp.status,
+    data,
+  };
 }
 
 export async function alterarUsuario(id: string, dados: { nome: string; email: string; senha: string }) {
