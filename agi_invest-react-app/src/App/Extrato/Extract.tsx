@@ -22,7 +22,7 @@ const Extract: React.FC = () => {
 
     {/*txt "Saldo atual"*/}
     <div style={{
-      position: 'fixed',
+      position: 'relative',
       top: '85px',
       left: '44px',
       zIndex: 1002,
@@ -42,7 +42,7 @@ const Extract: React.FC = () => {
 
     {/* Container para Saldo e Variação */}
     <div style={{
-      position: 'fixed',
+      position: 'relative',
       top: '110px',
       left: '44px',
       zIndex: 1002,
@@ -80,7 +80,7 @@ const Extract: React.FC = () => {
 
     {/* Ícone de seta para a direita */}
     <div style={{
-      position: 'fixed',
+      position: 'relative',
       top: '121px',
       right: '44px',
       zIndex: 1002,
@@ -105,7 +105,7 @@ const Extract: React.FC = () => {
 
     {/* Container dos Botões */}
     <div style={{
-      position: 'fixed',
+      position: 'relative',
       top: '170px',
       left: '37px',
       zIndex: 1002,
@@ -185,7 +185,7 @@ const Extract: React.FC = () => {
 
     {/* txt "Histórico" */}
     <div style={{
-      position: 'fixed',
+      position: 'relative',
       left: '16px',
       top: '280px',
       zIndex: 1002,
@@ -198,7 +198,7 @@ const Extract: React.FC = () => {
 
     {/* Card branco fixo no bottom */}
         <div style={{
-          position: 'fixed',
+          position: 'relative',
           left: '0px',
           right: '0px',
           top: '310px', 
@@ -316,7 +316,7 @@ const Extract: React.FC = () => {
           
         </div>    {/* Header/card azul */}
     <div style={{
-          position: 'fixed',
+          position: 'relative',
           top: '0px',
           bottom: '0px',
           width: '393px',
