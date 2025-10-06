@@ -2,7 +2,9 @@ package com.example.Sistema_Gastos_Review.service;
 
 import com.example.Sistema_Gastos_Review.dto.request.AlterarUsuarioRequest;
 import com.example.Sistema_Gastos_Review.dto.request.CriarUsuarioRequest;
+import com.example.Sistema_Gastos_Review.dto.request.LoginUsuarioRequest;
 import com.example.Sistema_Gastos_Review.dto.response.BaseResponse;
+import com.example.Sistema_Gastos_Review.dto.response.LoginUsuarioResponse;
 import com.example.Sistema_Gastos_Review.entity.Conta;
 import com.example.Sistema_Gastos_Review.entity.Usuario;
 import com.example.Sistema_Gastos_Review.mapper.ContaMapper;
@@ -53,11 +55,17 @@ public class UsuarioService {
     public BaseResponse alterarUsuario(String id, AlterarUsuarioRequest request) {
         Optional<Usuario> encontrado = usuarioRepository.findById(id);
         if (encontrado.isEmpty()) {
-            return new BaseResponse("Usuario nao encontrado.", HttpStatus.NOT_FOUND, null);
+            return new BaseResponse(
+                    "Usuario nao encontrado.",
+                    HttpStatus.NOT_FOUND,
+                    null);
         }
         Optional<Usuario> encontradoPeloEmailRequest = usuarioRepository.findByEmail(request.email());
         if (encontradoPeloEmailRequest.isPresent() && !request.email().equalsIgnoreCase(encontrado.get().getEmail())) {
-            return new BaseResponse("Email ja cadastrado por outro usuario.", HttpStatus.CONFLICT, null);
+            return new BaseResponse(
+                    "Email ja cadastrado por outro usuario.",
+                    HttpStatus.CONFLICT,
+                    null);
         }
 
         Usuario alterado = encontrado.get();
@@ -65,7 +73,10 @@ public class UsuarioService {
         alterado.setEmail(request.email());
         alterado.setSenha(request.senha());
         usuarioRepository.save(alterado);
-        return new BaseResponse("Usuario alterado com sucesso.", HttpStatus.OK, UsuarioMapper.toAlterarUsuarioResponse(alterado));
+        return new BaseResponse(
+                "Usuario alterado com sucesso.",
+                HttpStatus.OK,
+                UsuarioMapper.toAlterarUsuarioResponse(alterado));
     }
 
     public BaseResponse deletarUsuario(String id){
@@ -82,6 +93,31 @@ public class UsuarioService {
                 "Usuario nao encontrado.",
                 HttpStatus.NOT_FOUND,
                 null);
+    }
+
+    public BaseResponse loginPorEmailESenha(LoginUsuarioRequest request){
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(request.email());
+        if (usuarioEncontrado.isEmpty()){
+            return new BaseResponse(
+                    "Usuário não encontrado.",
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        }
+        Usuario usuario = usuarioEncontrado.get();
+        if (!usuario.getSenha().equalsIgnoreCase(request.senha())){
+            return new BaseResponse(
+                    "Senha incorreta.",
+                    HttpStatus.CONFLICT,
+                    null);
+        }
+
+        LoginUsuarioResponse loginUsuarioResponse = new LoginUsuarioResponse(usuario.getId(), usuario.getNome());
+
+        return new BaseResponse(
+                "Login efetuado com suceso.",
+                HttpStatus.OK,
+                loginUsuarioResponse);
     }
 
 }

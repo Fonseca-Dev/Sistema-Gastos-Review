@@ -2,6 +2,7 @@ package com.example.Sistema_Gastos_Review.service;
 
 import com.example.Sistema_Gastos_Review.dto.request.CriarContaRequest;
 import com.example.Sistema_Gastos_Review.dto.response.BaseResponse;
+import com.example.Sistema_Gastos_Review.dto.response.BuscarContasReponse;
 import com.example.Sistema_Gastos_Review.entity.Conta;
 import com.example.Sistema_Gastos_Review.entity.Usuario;
 import com.example.Sistema_Gastos_Review.mapper.ContaMapper;
@@ -11,6 +12,7 @@ import com.example.Sistema_Gastos_Review.repository.UsuarioRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 @Service
@@ -87,5 +89,28 @@ public class ContaService {
                 "Conta deleta com sucesso.",
                 HttpStatus.OK,
                 ContaMapper.toDeletarContaResponse(conta));
+    }
+
+    public BaseResponse buscarContas(String idUsuario){
+        Optional<Usuario> usuarioEncontrado = usuarioRepository.findById(idUsuario);
+        if(usuarioEncontrado.isEmpty()){
+            return new BaseResponse(
+                    "Busca de contas negada! Usuario nao encontrado.",
+                    HttpStatus.NOT_FOUND,
+                    null);
+        }
+        Usuario usuario = usuarioEncontrado.get();
+        List<Conta> contas = contaRepository.findByUsuarioId(idUsuario);
+        if(contas.isEmpty()){
+            return new BaseResponse(
+                    "Nenhuma conta encontrada.",
+                    HttpStatus.NOT_FOUND,
+                    null
+            );
+        }
+        return new BaseResponse(
+                "Contas encontradas.",
+                HttpStatus.OK,
+                ContaMapper.toBuscarContaResponse(contas));
     }
 }

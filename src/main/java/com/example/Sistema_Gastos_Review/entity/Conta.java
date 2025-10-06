@@ -35,6 +35,9 @@ public class Conta {
     @NotBlank
     private String estado;
 
+    @Version
+    private Long version; // campo para controle de versão (lock otimista)
+
 
     @ManyToOne
     @JoinColumn(name = "id_usuario")
@@ -62,7 +65,7 @@ public class Conta {
 
     @OneToMany(mappedBy = "contaOrigem")
     @JsonIgnoreProperties("conta") // evita loop
-    private List<Pagamento_Transferencia> pagamentoTransferencias;
+    private List<Transferencia> pagamentoTransferencias;
 
     @OneToMany(mappedBy = "conta")
     @JsonIgnoreProperties("conta")
