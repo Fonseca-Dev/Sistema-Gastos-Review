@@ -37,6 +37,7 @@ const Login: React.FC = () => {
       alert("✅ Login realizado com sucesso!");
       localStorage.setItem("userEmail", email);
       localStorage.setItem("userName", resposta.objeto.nome);
+      localStorage.setItem("userID", resposta.objeto.id);
       setShowLoginPopup(false);
       navigate("/home");
     } else {
@@ -386,4 +387,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
 
