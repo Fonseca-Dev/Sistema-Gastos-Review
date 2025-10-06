@@ -17,11 +17,11 @@ const Login: React.FC = () => {
     navigate("/home");
   };
 
-  const handleQuickLogin = () => {
+  /*const handleQuickLogin = () => {
     console.log("Entrando rapidamente");
     alert("Login rápido realizado!");
     navigate("/home");
-  };
+  };*/
 
   const handleBackClick = () => navigate("/");
 
@@ -161,6 +161,7 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
 
 
 
