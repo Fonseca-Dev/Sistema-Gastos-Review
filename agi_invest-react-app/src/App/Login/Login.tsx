@@ -20,35 +20,36 @@ const Login: React.FC = () => {
 
   // 🔹 Função de login com API
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!email || !senha) {
-      alert("⚠️ Preencha e-mail e senha!");
-      return;
+  if (!email || !senha) {
+    alert("⚠️ Preencha e-mail e senha!");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const resposta = await loginPorEmailESenha({ email, senha });
+
+    // Checando o status retornado pela API
+    if (resposta.status === "OK") {
+      alert("✅ Login realizado com sucesso!");
+      localStorage.setItem("userEmail", email);
+      localStorage.setItem("userName", resposta.objeto.nome);
+      setShowLoginPopup(false);
+      navigate("/home");
+    } else {
+      alert("❌ E-mail ou senha incorretos!");
     }
+  } catch (erro) {
+    console.error("Erro ao tentar logar:", erro);
+    alert("⚠️ Erro ao conectar com o servidor. Tente novamente.");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    setLoading(true);
-
-    try {
-      // 🔸 Chama a função da sua API
-      const resposta = await loginPorEmailESenha({ email, senha });
-
-      // Se a resposta for HTTP 200 ou 201
-      if (resposta.ok || resposta.status === 200 || resposta.status === 201) {
-        alert("✅ Login realizado com sucesso!");
-        localStorage.setItem("userEmail", email);
-        setShowLoginPopup(false);
-        navigate("/home");
-      } else {
-        alert("❌ E-mail ou senha incorretos!");
-      }
-    } catch (erro) {
-      console.error("Erro ao tentar logar:", erro);
-      alert("⚠️ Erro ao conectar com o servidor. Tente novamente.");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleQuickLogin = () => setShowLoginPopup(true);
   const handleSignup = () => navigate("/signup");
@@ -385,3 +386,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
