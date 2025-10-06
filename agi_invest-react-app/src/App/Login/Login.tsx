@@ -84,7 +84,7 @@ const Login: React.FC = () => {
 
       {/* Saudação */}
       <div style={{
-        position: 'absolute', left: '45px', top: '50%', transform: 'translateY(-50%)',
+        position: 'absolute', left: '45px', top: '25%', transform: 'translateY(-50%)',
         marginTop: '30px', width: 'calc(100% - 32px)', zIndex: 2
       }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: 'white' }}>
@@ -160,4 +160,5 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
 
