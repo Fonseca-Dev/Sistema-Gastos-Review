@@ -16,22 +16,21 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Verificar se existe dados salvos no localStorage
-    const savedEmail = localStorage.getItem('userEmail');
-    const savedPassword = localStorage.getItem('userPassword');
-    
-    if (email === savedEmail && senha === savedPassword) {
-      alert("Login realizado com sucesso!");
-      setShowLoginPopup(false);
-      navigate("/home");
-    } else {
-      try {
+  const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  // Verificar se existe dados salvos no localStorage
+  const savedEmail = localStorage.getItem('userEmail');
+  const savedPassword = localStorage.getItem('userPassword');
+
+  if (email === savedEmail && senha === savedPassword) {
+    alert("Login realizado com sucesso!");
+    setShowLoginPopup(false);
+    navigate("/home");
+  } else {
+    try {
       const resposta = await loginPorEmailESenha({ email, senha });
 
-      // ✅ Se a API responder corretamente, segue pra home
       if (resposta.ok || resposta.status === 200) {
         alert("✅ Login realizado com sucesso!");
         localStorage.setItem("userEmail", email);
@@ -43,14 +42,10 @@ const Login: React.FC = () => {
     } catch (erro) {
       console.error("Erro ao tentar logar:", erro);
       alert("⚠️ Erro de conexão ou credenciais inválidas.");
-    } finally {
-      setLoading(false);
     }
-  };
-      
-      alert("Email ou senha incorretos!");
-    }
-  };
+  }
+};
+
 
   const handleQuickLogin = () => {
     setShowLoginPopup(true);
@@ -450,3 +445,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
