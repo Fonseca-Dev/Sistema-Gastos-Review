@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeft } from "lucide-react";
+//import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import backgroundImage from "../../assets/images/background.png";
 
@@ -21,11 +21,11 @@ const Login: React.FC = () => {
     console.log("Entrando rapidamente");
     alert("Login rápido realizado!");
     navigate("/home");
-  };*/
+  };
 
   const handleBackClick = () => navigate("/");
 
-  const handleGoToSignup = () => navigate("/signup");
+  const handleGoToSignup = () => navigate("/signup");*/
 
   return (
     <div style={{
@@ -152,6 +152,7 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
 
 
 
