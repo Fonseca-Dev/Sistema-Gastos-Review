@@ -11,7 +11,7 @@ const Login: React.FC = () => {
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [setLoading] = useState(false);
 
   /*const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -186,3 +186,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
