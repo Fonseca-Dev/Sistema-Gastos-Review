@@ -54,18 +54,10 @@ const Login: React.FC = () => {
         </h1>
       </div>
 
-      {/* Botão voltar */}
-      <button onClick={handleBackClick} style={{
-        background: 'none', border: 'none', color: 'white', cursor: 'pointer',
-        display: 'flex', alignItems: 'center', gap: '8px',
-        position: 'absolute', top: '70px', right: '99px', fontSize: '16px', zIndex: 2
-      }}>
-        <ArrowLeft size={24} /> Voltar
-      </button>
 
       {/* Avatar */}
       <div style={{
-        position: 'absolute', left: '45px', top: '25%', transform: 'translateY(-50%)',
+        position: 'absolute', left: '45px', top: '35%', transform: 'translateY(-50%)',
         marginTop: '-40px', zIndex: 2
       }}>
         {avatarImage ? (
@@ -84,7 +76,7 @@ const Login: React.FC = () => {
 
       {/* Saudação */}
       <div style={{
-        position: 'absolute', left: '45px', top: '25%', transform: 'translateY(-50%)',
+        position: 'absolute', left: '45px', top: '35%', transform: 'translateY(-50%)',
         marginTop: '30px', width: 'calc(100% - 32px)', zIndex: 2
       }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: 'white' }}>
@@ -94,7 +86,7 @@ const Login: React.FC = () => {
 
       {/* Subtítulo */}
       <div style={{
-        position: 'absolute', left: '45px', top: '25%', transform: 'translateY(-50%)',
+        position: 'absolute', left: '45px', top: '35%', transform: 'translateY(-50%)',
         marginTop: '90px', width: 'calc(100% - 32px)', zIndex: 2
       }}>
         <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0, color: '#CAFC92' }}>Bora agilizar?</h2>
@@ -160,6 +152,7 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
 
 
 
